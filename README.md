@@ -77,7 +77,7 @@ http://localhost:8080/api/transactions
 | GET    | `/api/transactions` | Get all transactions | None |
 | GET    | `/api/transactions/{id}` | Get transaction by ID | None |
 | POST   | `/api/transactions` | Create new transaction | userId, amount, category |
-| PUT    | `/api/transactions/{id}` | Update transaction | All fields |
+| PUT    | `/api/transactions/{id}` | Update transaction | amount, category |
 | DELETE | `/api/transactions/{id}` | Delete transaction | None |
 
 ### Request/Response Examples

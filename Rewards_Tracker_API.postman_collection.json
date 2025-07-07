@@ -166,7 +166,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"transactionId\": \"txn_100000\",\n  \"userId\": \"user_40\",\n  \"amount\": 200.00,\n  \"category\": \"travel\",\n  \"transactionDate\": \"2025-04-20\"\n}",
+					"raw": "{\n  \"amount\": 200.00,\n  \"category\": \"dining\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -186,7 +186,7 @@
 						"txn_100000"
 					]
 				},
-				"description": "Update an existing transaction. All fields must be provided including the transaction ID and date."
+				"description": "Update an existing transaction. Only amount and category can be updated. Transaction ID, user ID, and date are preserved from the original transaction."
 			},
 			"response": []
 		},

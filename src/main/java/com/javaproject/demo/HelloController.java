@@ -76,6 +76,14 @@ public class HelloController {
     public String updateTransaction(@PathVariable String transactionId, @RequestBody TransactionCsv updatedTransaction) {
         for (int i = 0; i < transactions.size(); i++) {
             if (transactions.get(i).getTransactionId().equals(transactionId)) {
+                TransactionCsv existingTransaction = transactions.get(i);
+                
+                // Preserve original ID, user ID, and date
+                updatedTransaction.setTransactionId(existingTransaction.getTransactionId());
+                updatedTransaction.setUserId(existingTransaction.getUserId());
+                updatedTransaction.setTransactionDate(existingTransaction.getTransactionDate());
+                
+                // Update only amount and category
                 transactions.set(i, updatedTransaction);
                 return "Transaction updated: " + updatedTransaction.toString();
             }
