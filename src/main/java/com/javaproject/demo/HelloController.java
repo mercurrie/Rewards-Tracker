@@ -1,8 +1,11 @@
 package com.javaproject.demo;
 
 import com.opencsv.bean.CsvToBeanBuilder;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+
 
 import javax.annotation.PostConstruct;
 import java.io.FileReader;
@@ -14,7 +17,8 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/transactions")
 public class HelloController {
-
+    @Autowired
+    private TransactionRepository transactionRepository;
     private List<TransactionCsv> transactions = new ArrayList<>();
 
     @Value("${transactions.file.path:src/main/resources/transactions.csv}")
@@ -38,21 +42,23 @@ public class HelloController {
     @PostMapping
     public String createTransaction(@RequestBody TransactionCsv transaction) {
         // Generate a new transaction ID by incrementing the last ID
-        String lastTransactionId = transactions.stream()
-                .map(TransactionCsv::getTransactionId)
-                .max(String::compareTo)
-                .orElse("txn_100000"); // Default starting ID if the list is empty
+        // String lastTransactionId = transactions.stream()
+        //         .map(TransactionCsv::getTransactionId)
+        //         .max(String::compareTo)
+        //         .orElse("txn_100000"); // Default starting ID if the list is empty
 
-        int newId = Integer.parseInt(lastTransactionId.split("_")[1]) + 1;
-        String newTransactionId = "txn_" + String.format("%06d", newId);
+        // int newId = Integer.parseInt(lastTransactionId.split("_")[1]) + 1;
+        // String newTransactionId = "txn_" + String.format("%06d", newId);
 
-        // Set the generated ID and current date to the new transaction
-        transaction.setTransactionId(newTransactionId);
-        transaction.setTransactionDate(java.time.LocalDate.now());
+        // // Set the generated ID and current date to the new transaction
+        // transaction.setTransactionId(newTransactionId);
+        // transaction.setTransactionDate(java.time.LocalDate.now());
 
-        // Add the transaction to the list
-        transactions.add(transaction);
+        // // Add the transaction to the list
+        // transactions.add(transaction);
 
+        // return "Transaction created: " + transaction.toString();
+        transactionRepository.save(new Transaction(transaction));
         return "Transaction created: " + transaction.toString();
     }
 
@@ -64,11 +70,16 @@ public class HelloController {
                 .findFirst();
         return transaction.orElse(null);
     }
+    
 
     // Get all transactions
     @GetMapping
     public List<TransactionCsv> getAllTransactions() {
-        return transactions;
+        // return transactions;
+        return transactionRepository.findAll().stream()
+                .map(Transaction::toCsv)
+                .toList();
+
     }
 
     // Update a transaction by ID
