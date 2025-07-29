@@ -14,7 +14,7 @@ A comprehensive Spring Boot REST API for managing transaction data and tracking 
 - **Advanced Querying**: Find transactions by user ID, category, or transaction ID
 - **Logging**: Structured logging with Log4j2 for debugging and monitoring
 - **Error Handling**: Graceful error handling with detailed logging
-- **Postman Collection**: Ready-to-use Postman collection for API testing
+- **Postman Collection**: Ready-to-use Postman collection for API testing.
 
 ## Technology Stack
 
