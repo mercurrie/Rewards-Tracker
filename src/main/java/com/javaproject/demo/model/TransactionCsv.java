@@ -3,13 +3,16 @@ package com.javaproject.demo.model;
 import com.javaproject.demo.config.LocalDateConverter;
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvCustomBindByName;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class TransactionCsv {
+    private static final Logger logger = LogManager.getLogger(TransactionCsv.class);
 
     @CsvBindByName(column = "transaction_id")
-    private Long transactionId;
+    private String transactionId;
 
     @CsvBindByName(column = "user_id")
     private String userId;
@@ -27,7 +30,9 @@ public class TransactionCsv {
     public TransactionCsv() {}
 
     // All-args constructor
-    public TransactionCsv(Long transactionId, String userId, BigDecimal amount, String category, LocalDate transactionDate) {
+    public TransactionCsv(String transactionId, String userId, BigDecimal amount, String category, LocalDate transactionDate) {
+        logger.debug("Creating new TransactionCsv with ID: {}, User: {}, Amount: {}, Category: {}", 
+                    transactionId, userId, amount, category);
         this.transactionId = transactionId;
         this.userId = userId;
         this.amount = amount;
@@ -36,11 +41,11 @@ public class TransactionCsv {
     }
 
     // Getters and setters
-    public Long getTransactionId() {
+    public String getTransactionId() {
         return transactionId;
     }
 
-    public void setTransactionId(Long transactionId) {
+    public void setTransactionId(String transactionId) {
         this.transactionId = transactionId;
     }
 
@@ -79,7 +84,7 @@ public class TransactionCsv {
     @Override
     public String toString() {
         return "TransactionCsv{" +
-                "transactionId=" + transactionId +
+                "transactionId='" + transactionId + '\'' +
                 ", userId='" + userId + '\'' +
                 ", amount=" + amount +
                 ", category='" + category + '\'' +

@@ -1,0 +1,2 @@
+transaction_id,user_id,amount,category,transaction_date
+1,test_user,100.00,Test,2024-01-01

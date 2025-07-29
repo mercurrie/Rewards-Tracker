@@ -1,12 +1,15 @@
 package com.javaproject.demo.model;
 
 import jakarta.persistence.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "transactions")
 public class Transaction {
+    private static final Logger logger = LogManager.getLogger(Transaction.class);
 
     @Id
     @Column(name = "transaction_id", length = 20)
@@ -29,6 +32,8 @@ public class Transaction {
 
     // Constructor with all fields
     public Transaction(String transactionId, String userId, BigDecimal amount, String category, LocalDate transactionDate) {
+        logger.debug("Creating new Transaction with ID: {}, User: {}, Amount: {}, Category: {}", 
+                    transactionId, userId, amount, category);
         this.transactionId = transactionId;
         this.userId = userId;
         this.amount = amount;
@@ -38,7 +43,8 @@ public class Transaction {
 
     // Constructor from TransactionCsv (for easy conversion)
     public Transaction(TransactionCsv csvTransaction) {
-        this.transactionId = csvTransaction.getTransactionId().toString();
+        logger.debug("Converting TransactionCsv to Transaction: {}", csvTransaction.getTransactionId());
+        this.transactionId = csvTransaction.getTransactionId();
         this.userId = csvTransaction.getUserId();
         this.amount = csvTransaction.getAmount();
         this.category = csvTransaction.getCategory();
@@ -47,7 +53,7 @@ public class Transaction {
 
     // Convert to TransactionCsv (for compatibility)
     public TransactionCsv toTransactionCsv() {
-        return new TransactionCsv(Long.parseLong(this.transactionId), this.userId, this.amount, this.category, this.transactionDate);
+        return new TransactionCsv(this.transactionId, this.userId, this.amount, this.category, this.transactionDate);
     }
 
     // Getters and setters
@@ -57,15 +63,6 @@ public class Transaction {
 
     public void setTransactionId(String transactionId) {
         this.transactionId = transactionId;
-    }
-
-    // For Long ID compatibility (needed by controller)
-    public Long getTransactionIdAsLong() {
-        return Long.parseLong(this.transactionId);
-    }
-
-    public void setTransactionId(Long transactionId) {
-        this.transactionId = String.valueOf(transactionId);
     }
 
     public String getUserId() {
