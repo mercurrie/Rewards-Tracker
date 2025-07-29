@@ -1,4 +1,4 @@
-package com.javaproject.demo;
+package com.javaproject.demo.config;
 
 import com.opencsv.bean.AbstractBeanField;
 import java.time.LocalDate;

@@ -1,4 +1,4 @@
-package com.javaproject.demo;
+package com.javaproject.demo.model;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
@@ -38,7 +38,7 @@ public class Transaction {
 
     // Constructor from TransactionCsv (for easy conversion)
     public Transaction(TransactionCsv csvTransaction) {
-        this.transactionId = csvTransaction.getTransactionId();
+        this.transactionId = csvTransaction.getTransactionId().toString();
         this.userId = csvTransaction.getUserId();
         this.amount = csvTransaction.getAmount();
         this.category = csvTransaction.getCategory();
@@ -47,7 +47,7 @@ public class Transaction {
 
     // Convert to TransactionCsv (for compatibility)
     public TransactionCsv toTransactionCsv() {
-        return new TransactionCsv(this.transactionId, this.userId, this.amount, this.category, this.transactionDate);
+        return new TransactionCsv(Long.parseLong(this.transactionId), this.userId, this.amount, this.category, this.transactionDate);
     }
 
     // Getters and setters
@@ -57,6 +57,15 @@ public class Transaction {
 
     public void setTransactionId(String transactionId) {
         this.transactionId = transactionId;
+    }
+
+    // For Long ID compatibility (needed by controller)
+    public Long getTransactionIdAsLong() {
+        return Long.parseLong(this.transactionId);
+    }
+
+    public void setTransactionId(Long transactionId) {
+        this.transactionId = String.valueOf(transactionId);
     }
 
     public String getUserId() {
@@ -91,10 +100,6 @@ public class Transaction {
         this.transactionDate = transactionDate;
     }
 
-    public TransactionCsv toCsv() {
-        return new TransactionCsv(transactionId, userId, amount, category, transactionDate);
-    }
-
     @Override
     public String toString() {
         return "Transaction{" +
@@ -107,10 +112,10 @@ public class Transaction {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Transaction that = (Transaction) o;
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Transaction that = (Transaction) obj;
         return transactionId != null ? transactionId.equals(that.transactionId) : that.transactionId == null;
     }
 

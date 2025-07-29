@@ -1,5 +1,6 @@
-package com.javaproject.demo;
+package com.javaproject.demo.model;
 
+import com.javaproject.demo.config.LocalDateConverter;
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvCustomBindByName;
 import java.math.BigDecimal;
@@ -8,7 +9,7 @@ import java.time.LocalDate;
 public class TransactionCsv {
 
     @CsvBindByName(column = "transaction_id")
-    private String transactionId;
+    private Long transactionId;
 
     @CsvBindByName(column = "user_id")
     private String userId;
@@ -26,7 +27,7 @@ public class TransactionCsv {
     public TransactionCsv() {}
 
     // All-args constructor
-    public TransactionCsv(String transactionId, String userId, BigDecimal amount, String category, LocalDate transactionDate) {
+    public TransactionCsv(Long transactionId, String userId, BigDecimal amount, String category, LocalDate transactionDate) {
         this.transactionId = transactionId;
         this.userId = userId;
         this.amount = amount;
@@ -35,11 +36,11 @@ public class TransactionCsv {
     }
 
     // Getters and setters
-    public String getTransactionId() {
+    public Long getTransactionId() {
         return transactionId;
     }
 
-    public void setTransactionId(String transactionId) {
+    public void setTransactionId(Long transactionId) {
         this.transactionId = transactionId;
     }
 
@@ -78,7 +79,7 @@ public class TransactionCsv {
     @Override
     public String toString() {
         return "TransactionCsv{" +
-                "transactionId='" + transactionId + '\'' +
+                "transactionId=" + transactionId +
                 ", userId='" + userId + '\'' +
                 ", amount=" + amount +
                 ", category='" + category + '\'' +

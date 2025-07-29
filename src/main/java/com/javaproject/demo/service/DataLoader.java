@@ -1,16 +1,19 @@
-package com.javaproject.demo;
+package com.javaproject.demo.service;
 
+import com.javaproject.demo.model.Transaction;
+import com.javaproject.demo.model.TransactionCsv;
+import com.javaproject.demo.repository.TransactionRepository;
 import com.opencsv.bean.CsvToBeanBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
+// import org.springframework.stereotype.Component; - Commented out since @Component is disabled
 
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 
-@Component
+// @Component - Commented out to disable automatic CSV loading since data is already in database
 public class DataLoader implements CommandLineRunner {
 
     @Autowired
