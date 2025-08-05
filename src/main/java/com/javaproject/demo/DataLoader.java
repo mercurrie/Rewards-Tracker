@@ -1,5 +1,8 @@
 package com.javaproject.demo;
 
+import com.javaproject.demo.model.Transaction;
+import com.javaproject.demo.model.TransactionCsv;
+import com.javaproject.demo.repository.TransactionRepository;
 import com.opencsv.bean.CsvToBeanBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
