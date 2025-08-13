@@ -6,14 +6,12 @@ import com.javaproject.demo.model.TransactionCsv;
 import com.javaproject.demo.repository.TransactionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -26,25 +24,26 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@ExtendWith(MockitoExtension.class)
-@WebMvcTest(TransactionController.class)
-@SpringJUnitConfig
 class TransactionControllerTest {
 
-    @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @Mock
     private TransactionRepository transactionRepository;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    @InjectMocks
+    private TransactionController transactionController;
+
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     private Transaction testTransaction;
     private TransactionCsv testTransactionCsv;
 
     @BeforeEach
     void setUp() {
+        MockitoAnnotations.openMocks(this);
+        mockMvc = MockMvcBuilders.standaloneSetup(transactionController).build();
+
         testTransaction = new Transaction();
         testTransaction.setTransactionId("txn_000001");
         testTransaction.setUserId("user123");

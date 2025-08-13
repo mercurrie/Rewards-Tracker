@@ -40,3 +40,7 @@ out/
 logs/*.log
 logs/*.log.*
 *.log
+
+### Firebase service account (DO NOT COMMIT REAL KEYS) ###
+rewards-tracker-71c41-firebase-adminsdk-*.json
+src/main/resources/firebase/*.json
