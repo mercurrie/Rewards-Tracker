@@ -1,15 +1,19 @@
 package com.javaproject.demo.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.javaproject.demo.config.TestFirebaseConfig;
 import com.javaproject.demo.model.TransactionCsv;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.math.BigDecimal;
 
@@ -19,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@Import(TestFirebaseConfig.class)
 @Transactional
 class TransactionIntegrationTest {
 
@@ -29,6 +34,7 @@ class TransactionIntegrationTest {
     private ObjectMapper objectMapper;
 
     @Test
+    @WithMockUser
     void fullTransactionLifecycleTest() throws Exception {
         // Create a new transaction
         TransactionCsv newTransaction = new TransactionCsv();
@@ -67,6 +73,7 @@ class TransactionIntegrationTest {
     }
 
     @Test
+    @WithMockUser
     void errorHandlingTest() throws Exception {
         // GET - Non-existent transaction (returns null, so empty response with 200)
         mockMvc.perform(get("/api/transactions/txn_999999"))

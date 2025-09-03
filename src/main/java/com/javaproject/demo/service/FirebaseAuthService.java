@@ -3,6 +3,7 @@ package com.javaproject.demo.service;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
+import com.google.firebase.auth.SessionCookieOptions;
 import com.javaproject.demo.model.User;
 import com.javaproject.demo.model.UserRole;
 import com.javaproject.demo.repository.UserRepository;
@@ -25,6 +26,21 @@ public class FirebaseAuthService {
 
     public User verify(String idToken) throws FirebaseAuthException {
         FirebaseToken decoded = firebaseAuth.verifyIdToken(idToken);
+        String uid = decoded.getUid();
+        String email = decoded.getEmail();
+        String name = decoded.getName();
+        return findOrCreate(uid, email, name);
+    }
+
+    // Create a session cookie from an ID token (expiresInMillis, e.g. TimeUnit.DAYS.toMillis(5))
+    public String createSessionCookie(String idToken, long expiresInMillis) throws FirebaseAuthException {
+        SessionCookieOptions options = SessionCookieOptions.builder().setExpiresIn(expiresInMillis).build();
+        return firebaseAuth.createSessionCookie(idToken, options);
+    }
+
+    // Verify a Firebase session cookie and return the corresponding local User (creates if missing)
+    public User verifySessionCookie(String sessionCookie) throws FirebaseAuthException {
+        FirebaseToken decoded = firebaseAuth.verifySessionCookie(sessionCookie, true);
         String uid = decoded.getUid();
         String email = decoded.getEmail();
         String name = decoded.getName();
